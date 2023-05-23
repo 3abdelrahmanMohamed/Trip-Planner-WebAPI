@@ -1,31 +1,24 @@
 import { useState, useEffect } from 'react'
 import React from 'react'
 import axios from 'axios'
+import Currency from './Currency';
 
 function Home() {
 
-      // CurrencyAPI
-    const [Currency, setCurrency] = useState();
+  
+    
+    const [StartDate, setStartDate]  = useState('');
+    const [EndDate, SetEndDate] = useState('');
+    const [Budget, SetBudget] = useState('10000');
+    const [Location, SetLocation] = useState('Any');
+    console.log(Location)
+    console.log(Budget)
 
-    useEffect ( () =>{
-        axios.get('https://api.exchangerate.host/latest?base=EGP&amount=1200')
-        .then(res=>{
-            setCurrency(res.data)
-            console.log(Currency);
     
-        })
-        .catch(err => console.log(err))
-    
-      }, [])
 
 
     // Parameters for Trips
-    const [StartDate, setStartDate]  = useState('23-05-2023');
-    const [EndDate, SetEndDate] = useState('25-05-2023');
-    const [Budget, SetBudget] = useState('4000');
-    const [Location, SetLocation] = useState('France');
-    console.log(Location)
-    console.log(Budget)
+    
 
 
 
@@ -77,6 +70,12 @@ function Home() {
             <option value="Italy">Italy</option>
 
             <option value="France">France</option>
+
+            <option value="Germany">Germany</option>
+
+            <option value="Egypt">Egypt</option>
+
+            <option value="Japan">Japan</option>
         </select>
         <p>After values have been filled out, plan your trip!</p>
         <button onClick={() => window.location.reload(true)}>Plan Trip!</button>
@@ -106,6 +105,7 @@ function Home() {
 function SetDBParameters(StartDate, EndDate, Budget, Location) {
     // implemented DB API
     const [Trips, setTrips] = useState([]);
+    const [Currency, setCurrency] = useState('EUR');
 
     
         useEffect ( () =>{
@@ -123,6 +123,11 @@ function SetDBParameters(StartDate, EndDate, Budget, Location) {
           // WeatherAPI
         const [Weather, setWeather] = useState();
     
+        // default to france if user didnt specify
+        if(Location == "Any") {
+            Location = 'France'
+        }
+
         useEffect ( () =>{
             axios.get('http://api.weatherapi.com/v1/forecast.json?Key=d851801329f8455a8aa161446232305&q=' + Location)
             .then(res=>{
@@ -133,8 +138,23 @@ function SetDBParameters(StartDate, EndDate, Budget, Location) {
             .catch(err => console.log(err))
         
           }, [])
+
+          // CurrencyAPI call
+        useEffect ( () =>{
+        axios.get('https://api.exchangerate.host/latest?base=EGP&amount=4000')
+        .then(res=>{
+            setCurrency(res.data)
+            console.log(Currency);
+    
+        })
+        .catch(err => console.log(err))
+    
+      }, [])
     
     
+
+
+          
     return (
         <div>
            {
@@ -142,8 +162,10 @@ function SetDBParameters(StartDate, EndDate, Budget, Location) {
                 <div className='card' key={trip.num}>
                     <h3> {trip.countryname} </h3>
                     <p> Rate: {trip.currency} </p>
+                    <p> Flight costs in Rate: {Currency.rates.EUR} </p>
                     <p> Food: {trip.famousfood} </p>
-                    <p> Weather: {Weather.current.temp_c}°C </p>
+                    <p> Average Weather: {Weather.current.temp_c}°C </p>
+                    <p> Average Price: {trip.averageprice} </p>
                     <img 
                     src="//cdn.weatherapi.com/weather/64x64/day/116.png"
                     alt="new"

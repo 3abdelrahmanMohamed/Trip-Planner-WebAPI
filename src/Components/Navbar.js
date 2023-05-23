@@ -9,7 +9,7 @@ function navbar() {
                 <a href='/'> Home </a>
                 <a href='/AdminPanel'> Admin Panel </a>
                 {/* <a href='/Countries'> Countries </a> */}
-                <a href='/Currency'> Currency</a>
+                {/* <a href='/Currency'> Currency</a> */}
             </div>
         </nav>
       
