@@ -2,7 +2,8 @@
 import Home from './Components/Home';
 import Navbar from './Components/Navbar';
 import './Components/styles.css';
-import About from './Components/About';
+import './Components/Home.css';
+import AdminPanel from './Components/AdminPanel';
 import {BrowserRouter as Router , Route, Routes } from 'react-router-dom';
 import ThirdPartyAPI from './Components/ThirdPartyAPI';
 import Currency from './Components/Currency';
@@ -22,8 +23,8 @@ function App() {
       <Routes>
       
       <Route path='/' element={<Home />}/>
-      <Route path='/about' element={<About />}/>
-      <Route path='/Countries' element={<ThirdPartyAPI />}/>
+      <Route path='/AdminPanel' element={<AdminPanel />}/>
+      {/* <Route path='/Countries' element={<ThirdPartyAPI />}/> */}
       <Route path='/Currency' element={<Currency />}/>
 
 
